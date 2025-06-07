@@ -6,15 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-  Calendar,
-  Award,
-  Facebook,
-} from "lucide-react";
+import { Mail, MapPin, Calendar, Award, Facebook } from "lucide-react";
 import Image from "next/image";
 
 const teamMembers = [

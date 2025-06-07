@@ -157,7 +157,6 @@ export default function QuizPage() {
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
 
   const handleAnswerSelect = (answerIndex: number) => {
     const newAnswers = [...selectedAnswers];
@@ -201,7 +200,6 @@ export default function QuizPage() {
     setSelectedAnswers([]);
     setShowResults(false);
     setQuizStarted(false);
-    setTimeLeft(300);
   };
 
   if (!quizStarted) {
