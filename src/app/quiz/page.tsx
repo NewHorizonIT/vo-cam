@@ -1,369 +1,122 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import {
-  CheckCircle,
-  XCircle,
-  RotateCcw,
-  Trophy,
+  Brain,
+  BookOpen,
   Clock,
   Target,
+  Trophy,
+  ArrowLeft,
+  Users,
 } from "lucide-react";
-
-const quizQuestions = [
-  {
-    id: 1,
-    question: "Theo bạn, thế nào được coi là vô cảm?",
-    options: [
-      "Là khi con người biết quan tâm, chia sẻ với những người xung quanh.",
-      "là một cách nói ẩn dụ dùng để chỉ hiện tượng con người ngày càng trở nên thờ ơ, lãnh đạm, thiếu quan tâm đến những vấn đề xung quanh, đặc biệt là nỗi đau, khó khăn hay bất hạnh của người khác.",
-      "Là khi con người dễ xúc động và hay giúp đỡ mọi người.",
-      "Là khi con người sống khép kín và không bao giờ tiếp xúc với xã hội.",
-    ],
-    correctAnswer: 1,
-    explanation:
-      "là một cách nói ẩn dụ dùng để chỉ hiện tượng con người ngày càng trở nên thờ ơ, lãnh đạm, thiếu quan tâm đến những vấn đề xung quanh, đặc biệt là nỗi đau, khó khăn hay bất hạnh của người khác.",
-  },
-  {
-    id: 2,
-    question:
-      "Bạn có được nghe nói về vô cảm ở trường bạn trong các môn học, giờ chào cờ, sinh hoạt hay hoạt động ngoại khóa không? ",
-    options: [
-      "Có, nhưng chỉ trong một vài môn học như Ngữ văn hoặc Giáo dục công dân.",
-      "Không, chưa từng nghe nhắc đến.",
-      "Có, vô cảm được nhắc đến trong nhiều hoạt động như môn học, giờ chào cờ, sinh hoạt lớp và ngoại khóa.",
-      "Có nghe nói nhưng không hiểu rõ đó là gì.",
-    ],
-    correctAnswer: 2,
-    explanation:
-      "Có, vô cảm được nhắc đến trong nhiều hoạt động như môn học, giờ chào cờ, sinh hoạt lớp và ngoại khóa.",
-  },
-  {
-    id: 3,
-    question:
-      "Nguyên nhân nào sau đây dẫn đến hiện tượng vô cảm ở một bộ phận giới trẻ hiện nay?",
-    options: [
-      "Do giới trẻ ngày nay luôn được sống trong môi trường đầy đủ tình cảm và sự quan tâm.",
-      "Do mạng xã hội giúp giới trẻ thấu hiểu và chia sẻ cảm xúc tốt hơn.",
-      "Do giới trẻ ngày càng chủ động tham gia các hoạt động tình nguyện, giúp đỡ cộng đồng.",
-      "Do ảnh hưởng tiêu cực từ mạng xã hội và các phương tiện truyền thông khiến họ sống khép kín, ít giao tiếp.",
-    ],
-    correctAnswer: 2,
-    explanation:
-      "Do ảnh hưởng tiêu cực từ mạng xã hội và các phương tiện truyền thông khiến họ sống khép kín, ít giao tiếp.",
-  },
-  {
-    id: 4,
-    question: "Nếu thấy mẹ em bị bệnh, em sẽ làm gì?",
-    options: [
-      "Lờ đi vì nghĩ việc chăm sóc là của người lớn.",
-      "Hỏi han, chăm sóc mẹ và phụ giúp việc nhà nếu có thể.",
-      "Cảm thấy buồn nhưng không biết làm gì nên cứ im lặng.",
-      "Rủ bạn đi chơi để quên đi chuyện đó cho đỡ buồn.",
-    ],
-    correctAnswer: 1,
-    explanation: "Hỏi han, chăm sóc mẹ và phụ giúp việc nhà nếu có thể.",
-  },
-  {
-    id: 5,
-    question: "Nếu bạn thấy một bạn học bị bắt nạt, bạn sẽ...?",
-    options: [
-      "Giả vờ không thấy để khỏi phiền phức.",
-      "Nói với giáo viên hoặc người lớn.",
-      "Quay video đăng lên mạng.",
-      "Cười theo cho vui.",
-    ],
-    correctAnswer: 1,
-    explanation: "Nói với giáo viên hoặc người lớn.",
-  },
-  {
-    id: 6,
-    question:
-      "Nếu một người bạn trong lớp bạn luôn im lặng, ít nói, có dấu hiệu buồn bã và tránh giao tiếp, bạn sẽ làm gì?",
-    options: [
-      "Lờ đi vì nghĩ bạn ấy không thích bị làm phiền.",
-      "Kể với bạn khác để mọi người chú ý.",
-      "Tìm cách tiếp cận, hỏi han nhẹ nhàng và chia sẻ với thầy cô nếu cần.",
-      "Tránh tiếp xúc vì sợ liên lụy đến mình.",
-    ],
-    correctAnswer: 2,
-    explanation:
-      "Tìm cách tiếp cận, hỏi han nhẹ nhàng và chia sẻ với thầy cô nếu cần.",
-  },
-  {
-    id: 7,
-    question: "Những người nào dễ bị vô cảm?",
-    options: [
-      "Những người luôn sẵn sàng lắng nghe và chia sẻ với người khác.",
-      "Những người biết quan tâm, giúp đỡ người gặp khó khăn.",
-      "Những người thường thể hiện sự đồng cảm trong các tình huống xã hội.",
-      "Những người thờ ơ, né tránh các mối quan hệ và không quan tâm đến cảm xúc của người khác.",
-    ],
-    correctAnswer: 3,
-    explanation:
-      "Những người thờ ơ, né tránh các mối quan hệ và không quan tâm đến cảm xúc của người khác.",
-  },
-  {
-    id: 8,
-    question:
-      "Trong giờ hoạt động trải nghiệm, cách nào là không hiệu quả để giải quyết tình trạng vô cảm?",
-    options: [
-      "Tạo không gian để học sinh thể hiện cảm xúc và chia sẻ với nhau.",
-      "Khuyến khích học sinh làm việc nhóm để tăng cường sự đồng cảm và hiểu biết.",
-      "Sử dụng các trò chơi để giải trí và chơi chung với nhau, giúp học sinh giảm sự vô cảm và xa lánh.",
-      "Để học sinh tự do, không định hướng hoạt động hay hỗ trợ cảm xúc.",
-    ],
-    correctAnswer: 3,
-    explanation:
-      "Để học sinh tự do, không định hướng hoạt động hay hỗ trợ cảm xúc.",
-  },
-  {
-    id: 9,
-    question:
-      "Bạn cảm các tiết học hoạt động trải nghiệm ở trường như thế nào?",
-    options: [
-      "Rất chán,cảm thấy buồn ngủ",
-      "Cảm thấy bình thường",
-      "Cảm thấy chưa được thực hành chơi các trò chơi nhiều",
-      "Rất vui,rất yêu thích tiết học.",
-    ],
-    correctAnswer: 3,
-    explanation: "Rất vui,rất yêu thích tiết học.",
-  },
-  {
-    id: 10,
-    question:
-      "Theo bạn có nên tổ chức các buổi tuyên truyền và ngăn ngừa tình trạng vô cảm cho học sinh không?",
-    options: [
-      "Không cần thiết vì học sinh tự biết cách sống có trách nhiệm.",
-      "Nên tổ chức nhưng chỉ dành cho một số học sinh có vấn đề cá nhân.",
-      "Chỉ nên tổ chức khi có dấu hiệu nghiêm trọng mới can thiệp.",
-      "Nên tổ chức thường xuyên để nâng cao nhận thức và phòng tránh vô cảm cho tất cả học sinh.",
-    ],
-    correctAnswer: 3,
-    explanation:
-      "Nên tổ chức thường xuyên để nâng cao nhận thức và phòng tránh vô cảm cho tất cả học sinh.",
-  },
-];
+import { QuizComponent } from "@/components/quiz-component";
+import { quizSets, type QuizSet } from "@/constants/index";
 
 export default function QuizPage() {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-  const [showResults, setShowResults] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState<QuizSet | null>(null);
+  const [completedQuizzes, setCompletedQuizzes] = useState<
+    Record<string, { score: number; total: number }>
+  >({});
 
-  const handleAnswerSelect = (answerIndex: number) => {
-    const newAnswers = [...selectedAnswers];
-    newAnswers[currentQuestion] = answerIndex;
-    setSelectedAnswers(newAnswers);
+  const handleQuizComplete = (
+    quizType: QuizSet,
+    score: number,
+    total: number
+  ) => {
+    setCompletedQuizzes((prev) => ({
+      ...prev,
+      [quizType]: { score, total },
+    }));
   };
 
-  const handleNext = () => {
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+  const getScorePercentage = (score: number, total: number) => {
+    return Math.round((score / total) * 100);
+  };
+
+  const getScoreBadge = (percentage: number) => {
+    if (percentage >= 80)
+      return {
+        variant: "default" as const,
+        text: "Xuất sắc",
+        color: "text-green-600",
+      };
+    if (percentage >= 60)
+      return {
+        variant: "secondary" as const,
+        text: "Khá",
+        color: "text-yellow-600",
+      };
+    return {
+      variant: "destructive" as const,
+      text: "Cần cải thiện",
+      color: "text-red-600",
+    };
+  };
+
+  // Custom scoring cho quiz khảo sát
+  const getSurveyScoring = (score: number) => {
+    if (score <= 3) {
+      return {
+        level: "Mức độ Vô cảm: Cao",
+        message:
+          "Bạn đang có biểu hiện thờ ơ, thiếu quan tâm đến người xung quanh. Điều này có thể ảnh hưởng xấu đến các mối quan hệ và sự phát triển cảm xúc của bạn.",
+        variant: "destructive" as const,
+      };
+    } else if (score <= 6) {
+      return {
+        level: "Mức độ Vô cảm: Trung bình",
+        message:
+          "Bạn có những lúc biết quan tâm, giúp đỡ người khác, nhưng cũng còn một số hành vi hoặc suy nghĩ mang tính thờ ơ. Bạn cần nhận diện rõ hơn các biểu hiện vô cảm trong bản thân và tích cực thay đổi để trở thành người biết yêu thương, sẻ chia nhiều hơn.",
+        variant: "default" as const,
+      };
     } else {
-      setShowResults(true);
+      return {
+        level: "Mức độ Vô cảm: Thấp",
+        message:
+          "Bạn là người biết lắng nghe, quan tâm và sẵn sàng giúp đỡ người khác. Đây là điều rất đáng quý và cần được phát huy. Hãy tiếp tục giữ gìn, lan tỏa tình cảm tích cực và tinh thần sẻ chia trong cuộc sống hàng ngày",
+        variant: "secondary" as const,
+      };
     }
   };
 
-  const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    }
-  };
-
-  const calculateScore = () => {
-    let correct = 0;
-    selectedAnswers.forEach((answer, index) => {
-      if (answer === quizQuestions[index].correctAnswer) {
-        correct++;
-      }
-    });
-    return correct;
-  };
-
-  const getScoreColor = (score: number) => {
-    const percentage = (score / quizQuestions.length) * 100;
-    if (percentage >= 80) return "text-green-600";
-    if (percentage >= 60) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const resetQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedAnswers([]);
-    setShowResults(false);
-    setQuizStarted(false);
-  };
-
-  if (!quizStarted) {
+  if (selectedQuiz) {
+    const quiz = quizSets[selectedQuiz];
     return (
       <div className="min-h-screen py-8 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              Quiz về Vô cảm
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Kiểm tra kiến thức của bạn về tâm lý học vô cảm
-            </p>
+        <div className="container mx-auto max-w-6xl">
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              onClick={() => setSelectedQuiz(null)}
+              className="mb-4"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Quay lại danh sách quiz
+            </Button>
           </div>
 
-          <Card className="max-w-2xl mx-auto">
-            <CardHeader className="text-center">
-              <CardTitle className="flex items-center justify-center gap-2">
-                <Trophy className="w-6 h-6 text-yellow-600" />
-                Thông tin Quiz
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-3 gap-4 text-center">
-                <div className="flex flex-col items-center space-y-2">
-                  <Target className="w-8 h-8 text-blue-600" />
-                  <div>
-                    <div className="font-semibold">
-                      {quizQuestions.length} câu hỏi
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Trắc nghiệm
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center space-y-2">
-                  <Clock className="w-8 h-8 text-green-600" />
-                  <div>
-                    <div className="font-semibold">5 phút</div>
-                    <div className="text-sm text-muted-foreground">
-                      Thời gian
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center space-y-2">
-                  <Trophy className="w-8 h-8 text-yellow-600" />
-                  <div>
-                    <div className="font-semibold">Điểm số</div>
-                    <div className="text-sm text-muted-foreground">
-                      Đánh giá ngay
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="font-semibold">Hướng dẫn:</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Đọc kỹ từng câu hỏi trước khi chọn đáp án</li>
-                  <li>• Mỗi câu hỏi chỉ có một đáp án đúng</li>
-                  <li>
-                    • Bạn có thể quay lại câu hỏi trước đó để thay đổi đáp án
-                  </li>
-                  <li>• Kết quả sẽ được hiển thị ngay sau khi hoàn thành</li>
-                </ul>
-              </div>
-
-              <Button
-                onClick={() => setQuizStarted(true)}
-                className="w-full"
-                size="lg"
-              >
-                Bắt đầu Quiz
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  if (showResults) {
-    const score = calculateScore();
-    const percentage = Math.round((score / quizQuestions.length) * 100);
-
-    return (
-      <div className="min-h-screen py-8 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <Card className="max-w-2xl mx-auto">
-            <CardHeader className="text-center">
-              <CardTitle className="flex items-center justify-center gap-2">
-                <Trophy className="w-6 h-6 text-yellow-600" />
-                Kết quả Quiz
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center space-y-4">
-                <div className={`text-4xl font-bold ${getScoreColor(score)}`}>
-                  {score}/{quizQuestions.length}
-                </div>
-                <div className="text-2xl font-semibold">{percentage}%</div>
-                <Badge
-                  variant={
-                    percentage >= 80
-                      ? "default"
-                      : percentage >= 60
-                      ? "secondary"
-                      : "destructive"
-                  }
-                  className="text-lg px-4 py-2"
-                >
-                  {percentage >= 80
-                    ? "Xuất sắc"
-                    : percentage >= 60
-                    ? "Khá"
-                    : "Cần cải thiện"}
-                </Badge>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="font-semibold">Chi tiết kết quả:</h3>
-                {quizQuestions.map((question, index) => {
-                  const isCorrect =
-                    selectedAnswers[index] === question.correctAnswer;
-                  return (
-                    <div key={question.id} className="border rounded-lg p-4">
-                      <div className="flex items-start gap-3">
-                        {isCorrect ? (
-                          <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-red-600 mt-1" />
-                        )}
-                        <div className="flex-1">
-                          <p className="font-medium mb-2">
-                            Câu {index + 1}: {question.question}
-                          </p>
-                          <p className="text-sm text-muted-foreground mb-1">
-                            Đáp án của bạn:{" "}
-                            {question.options[selectedAnswers[index]]}
-                          </p>
-                          {!isCorrect && (
-                            <p className="text-sm text-green-600">
-                              Đáp án đúng:{" "}
-                              {question.options[question.correctAnswer]}
-                            </p>
-                          )}
-                          <p className="text-sm italic text-gray-500">
-                            {question.explanation}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="text-center">
-                <Button onClick={resetQuiz} className="mt-6" variant="outline">
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Làm lại bài Quiz
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <QuizComponent
+            title={quiz.title}
+            description={quiz.description}
+            questions={quiz.questions}
+            timeLimit={quiz.timeLimit}
+            onComplete={(score, total) =>
+              handleQuizComplete(selectedQuiz, score, total)
+            }
+            customScoring={
+              selectedQuiz === "survey" ? getSurveyScoring : undefined
+            }
+          />
         </div>
       </div>
     );
@@ -371,51 +124,268 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-screen py-8 px-4">
-      <div className="container mx-auto max-w-4xl">
-        <Card className="max-w-2xl mx-auto">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl font-bold">
-              Câu {currentQuestion + 1} / {quizQuestions.length}
-            </CardTitle>
-            <Progress
-              value={((currentQuestion + 1) / quizQuestions.length) * 100}
-              className="h-2 mt-4"
-            />
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <p className="font-medium mb-4">
-                {quizQuestions[currentQuestion].question}
-              </p>
-              <RadioGroup
-                value={
-                  selectedAnswers[currentQuestion]?.toString() || undefined
-                }
-                onValueChange={(val) => handleAnswerSelect(parseInt(val))}
-              >
-                {quizQuestions[currentQuestion].options.map((option, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem value={index.toString()} id={`q${index}`} />
-                    <Label htmlFor={`q${index}`}>{option}</Label>
+      <div className="container mx-auto max-w-6xl">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            Quiz về <span className="text-blue-600">Vô cảm</span>
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Chọn bộ câu hỏi phù hợp để kiểm tra kiến thức và mức độ vô cảm của
+            bạn
+          </p>
+        </div>
+
+        {/* Quiz Selection */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* Survey Quiz */}
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+            <CardHeader>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                  <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <Badge variant="secondary">Khảo sát</Badge>
+              </div>
+              <CardTitle className="text-xl mb-2">
+                {quizSets.survey.title}
+              </CardTitle>
+              <CardDescription className="text-base">
+                {quizSets.survey.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="flex flex-col items-center space-y-1">
+                  <Target className="w-5 h-5 text-blue-600" />
+                  <div className="text-sm font-medium">
+                    {quizSets.survey.questions.length} câu
                   </div>
-                ))}
-              </RadioGroup>
-            </div>
-            <div className="flex justify-between mt-6">
-              <Button onClick={handlePrevious} disabled={currentQuestion === 0}>
-                Quay lại
-              </Button>
+                </div>
+                <div className="flex flex-col items-center space-y-1">
+                  <Clock className="w-5 h-5 text-green-600" />
+                  <div className="text-sm font-medium">
+                    {Math.floor(quizSets.survey.timeLimit / 60)} phút
+                  </div>
+                </div>
+                <div className="flex flex-col items-center space-y-1">
+                  <Brain className="w-5 h-5 text-purple-600" />
+                  <div className="text-sm font-medium">Thực tế</div>
+                </div>
+              </div>
+
+              {completedQuizzes.survey && (
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">
+                      Kết quả gần nhất:
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`font-bold ${
+                          getScoreBadge(
+                            getScorePercentage(
+                              completedQuizzes.survey.score,
+                              completedQuizzes.survey.total
+                            )
+                          ).color
+                        }`}
+                      >
+                        {completedQuizzes.survey.score}/
+                        {completedQuizzes.survey.total}
+                      </span>
+                      <Badge
+                        variant={
+                          getScoreBadge(
+                            getScorePercentage(
+                              completedQuizzes.survey.score,
+                              completedQuizzes.survey.total
+                            )
+                          ).variant
+                        }
+                      >
+                        {
+                          getScoreBadge(
+                            getScorePercentage(
+                              completedQuizzes.survey.score,
+                              completedQuizzes.survey.total
+                            )
+                          ).text
+                        }
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <h4 className="font-semibold text-sm">Nội dung bao gồm:</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Các tình huống thực tế trong cuộc sống</li>
+                  <li>• Đánh giá mức độ vô cảm cá nhân</li>
+                  <li>• Nhận thức về vô cảm ở trường học</li>
+                  <li>• Cách ứng phó với các tình huống</li>
+                </ul>
+              </div>
+
               <Button
-                onClick={handleNext}
-                disabled={selectedAnswers[currentQuestion] === undefined}
+                onClick={() => setSelectedQuiz("survey")}
+                className="w-full group-hover:bg-primary/90 transition-colors"
               >
-                {currentQuestion === quizQuestions.length - 1
-                  ? "Hoàn thành"
-                  : "Tiếp theo"}
+                {completedQuizzes.survey ? "Làm lại Quiz" : "Bắt đầu Quiz"}
               </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+
+          {/* Basic Quiz */}
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+            <CardHeader>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <Badge variant="default">Cơ bản</Badge>
+              </div>
+              <CardTitle className="text-xl mb-2">
+                {quizSets.basic.title}
+              </CardTitle>
+              <CardDescription className="text-base">
+                {quizSets.basic.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="flex flex-col items-center space-y-1">
+                  <Target className="w-5 h-5 text-blue-600" />
+                  <div className="text-sm font-medium">
+                    {quizSets.basic.questions.length} câu
+                  </div>
+                </div>
+                <div className="flex flex-col items-center space-y-1">
+                  <Clock className="w-5 h-5 text-green-600" />
+                  <div className="text-sm font-medium">
+                    {Math.floor(quizSets.basic.timeLimit / 60)} phút
+                  </div>
+                </div>
+                <div className="flex flex-col items-center space-y-1">
+                  <Brain className="w-5 h-5 text-blue-600" />
+                  <div className="text-sm font-medium">Dễ</div>
+                </div>
+              </div>
+
+              {completedQuizzes.basic && (
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">
+                      Kết quả gần nhất:
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`font-bold ${
+                          getScoreBadge(
+                            getScorePercentage(
+                              completedQuizzes.basic.score,
+                              completedQuizzes.basic.total
+                            )
+                          ).color
+                        }`}
+                      >
+                        {completedQuizzes.basic.score}/
+                        {completedQuizzes.basic.total}
+                      </span>
+                      <Badge
+                        variant={
+                          getScoreBadge(
+                            getScorePercentage(
+                              completedQuizzes.basic.score,
+                              completedQuizzes.basic.total
+                            )
+                          ).variant
+                        }
+                      >
+                        {
+                          getScoreBadge(
+                            getScorePercentage(
+                              completedQuizzes.basic.score,
+                              completedQuizzes.basic.total
+                            )
+                          ).text
+                        }
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <h4 className="font-semibold text-sm">Nội dung bao gồm:</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Định nghĩa và khái niệm cơ bản</li>
+                  <li>• Phân biệt vô cảm và trầm cảm</li>
+                  <li>• Các biểu hiện thường gặp</li>
+                  <li>• Nguyên nhân và tác động</li>
+                </ul>
+              </div>
+
+              <Button
+                onClick={() => setSelectedQuiz("basic")}
+                className="w-full group-hover:bg-primary/90 transition-colors"
+                variant="secondary"
+              >
+                {completedQuizzes.basic ? "Làm lại Quiz" : "Bắt đầu Quiz"}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Statistics */}
+        {Object.keys(completedQuizzes).length > 0 && (
+          <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-yellow-600" />
+                Thống kê kết quả
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {Object.keys(completedQuizzes).length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Quiz đã hoàn thành
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">
+                    {Object.values(completedQuizzes).reduce(
+                      (acc, quiz) => acc + quiz.score,
+                      0
+                    )}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Tổng câu đúng
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {Math.round(
+                      Object.values(completedQuizzes).reduce(
+                        (acc, quiz) => acc + (quiz.score / quiz.total) * 100,
+                        0
+                      ) / Object.keys(completedQuizzes).length
+                    )}
+                    %
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Điểm trung bình
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

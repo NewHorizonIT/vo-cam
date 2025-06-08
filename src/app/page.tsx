@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Brain, BookOpen, Users, Trophy, ArrowRight, Star } from "lucide-react";
+import { BookOpen, Users, Trophy, ArrowRight, Star } from "lucide-react";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -16,18 +16,14 @@ export default function HomePage() {
       <section className="relative bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center space-y-6">
-            <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium">
-              <Brain className="w-4 h-4" />
-              Khám phá tâm lý học
-            </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white">
               Tìm hiểu về
-              <span className="text-blue-600 dark:text-blue-400">Vô Cảm</span>
+              <span className="text-blue-600 dark:text-blue-400"> Vô Cảm</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Khám phá thế giới tâm lý học về vô cảm - từ lý thuyết cơ bản đến
-              ứng dụng thực tế. Học tập thông qua các bài giảng, quiz và đánh
-              giá kiến thức.
+              Chào các bạn học sinh thân mến! Chào mừng các bạn đến với cổng
+              thông tin điện tử về bệnh vô cảm ở lứa tuổi vị thành niên trưởng
+              THCS Chu Văn An – một không gian chia sẻ, học hỏi và thấu hiểu.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8">

@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, MapPin, Calendar, Award, Facebook } from "lucide-react";
+import { MapPin, Calendar, Award, Facebook, Mail } from "lucide-react";
 import Image from "next/image";
 
 const teamMembers = [
@@ -14,7 +14,7 @@ const teamMembers = [
     id: 1,
     name: "Lâm Cẩm Giang",
     role: "Nhóm trưởng",
-    avatar: "/placeholder.svg?height=200&width=200",
+    avatar: "/m1.png",
     bio: "Học sinh THPT với tinh thần lãnh đạo và định hướng phát triển nhóm hiệu quả.",
     education: "THPT Nguyễn Bỉnh Khiêm",
     experience: "2009",
@@ -28,7 +28,7 @@ const teamMembers = [
     id: 2,
     name: "Nguyễn Mai Phát",
     role: "Thành viên",
-    avatar: "/placeholder.svg?height=200&width=200",
+    avatar: "/m2.png",
     bio: "Học sinh đầy năng động, tích cực tham gia vào các hoạt động nhóm và học tập.",
     education: "THPT Nguyễn Bỉnh Khiêm",
     experience: "2009",
@@ -42,7 +42,7 @@ const teamMembers = [
     id: 3,
     name: "Vũ Hải Hoàng Dũng",
     role: "Thành viên",
-    avatar: "/placeholder.svg?height=200&width=200",
+    avatar: "/m3.png",
     bio: "Học sinh có tinh thần hợp tác cao và đam mê khám phá kiến thức mới.",
     education: "THPT Nguyễn Bỉnh Khiêm",
     experience: "2009",
@@ -56,7 +56,7 @@ const teamMembers = [
     id: 4,
     name: "Lê Công Thành",
     role: "Thành viên",
-    avatar: "/placeholder.svg?height=200&width=200",
+    avatar: "/m4.png",
     bio: "Học sinh tích cực, yêu thích công nghệ và luôn sẵn sàng hỗ trợ nhóm.",
     education: "THPT Nguyễn Bỉnh Khiêm",
     experience: "2009",
@@ -83,44 +83,6 @@ export default function TeamPage() {
           </p>
         </div>
 
-        {/* Team Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                4
-              </div>
-              <div className="text-sm text-muted-foreground">Thành viên</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                39+
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Năm kinh nghiệm
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                3
-              </div>
-              <div className="text-sm text-muted-foreground">Thành phố</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                100%
-              </div>
-              <div className="text-sm text-muted-foreground">Tận tâm</div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Team Members */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {teamMembers.map((member) => (
@@ -132,7 +94,7 @@ export default function TeamPage() {
                     alt={member.name}
                     width={80}
                     height={80}
-                    className="rounded-full border-2 border-gray-200 dark:border-gray-700"
+                    className=" border-2 border-gray-200 dark:border-gray-700"
                   />
                   <div className="flex-1">
                     <CardTitle className="text-xl mb-1">
@@ -161,16 +123,21 @@ export default function TeamPage() {
                     <MapPin className="w-4 h-4 mr-2" />
                     {member.location}
                   </div>
+                  <div className="flex items-center text-muted-foreground">
+                    <Mail className="w-4 h-4 mr-2" />
+                    {member.social.email}
+                  </div>
                 </div>
 
                 <div className="flex space-x-2 pt-2">
                   <Button variant="outline" size="sm">
-                    <Mail className="w-4 h-4 mr-1" />
-                    Email
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    <Facebook className="w-4 h-4 mr-1" />
-                    Facebook
+                    <a
+                      href={member.social.facebook}
+                      className="flex items-center"
+                    >
+                      <Facebook className="w-4 h-4 mr-1" />
+                      Facebook
+                    </a>
                   </Button>
                 </div>
               </CardContent>

@@ -1,4 +1,5 @@
-import { Brain, Github, Mail, Phone } from "lucide-react";
+import { Brain, Github, Facebook, Mail } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
@@ -56,51 +57,27 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Tài nguyên</h3>
+            <h3 className="font-semibold mb-4">Liên hệ</h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Tài liệu tham khảo
-                </Link>
+              <li className="flex items-center space-x-2 text-muted-foreground">
+                <Facebook className="h-4 w-4" />
+                <a href="https://www.facebook.com/share/19AdfXChpJ/?mibextid=wwXIfr">
+                  Rèn luyện sự đồng cảm
+                </a>
               </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Hướng dẫn sử dụng
-                </Link>
+              <li className="flex items-center space-x-2 text-muted-foreground">
+                <Mail className="h-4 w-4" />
+                <span>vuhaihoangdung8@gmail.com</span>
               </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  FAQ
-                </Link>
+              <li className="flex items-center space-x-2 text-muted-foreground">
+                <Github className="h-4 w-4" />
+                <span>https://github.com/peterlegend29/peter</span>
               </li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">Liên hệ</h3>
-            <ul className="space-y-2">
-              <li className="flex items-center space-x-2 text-muted-foreground">
-                <Mail className="h-4 w-4" />
-                <span>contact@vocam-learning.com</span>
-              </li>
-              <li className="flex items-center space-x-2 text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                <span>+84 123 456 789</span>
-              </li>
-              <li className="flex items-center space-x-2 text-muted-foreground">
-                <Github className="h-4 w-4" />
-                <span>github.com/vocam-learning</span>
-              </li>
-            </ul>
+          <div className="flex flex-col items-center">
+            <Image src="/qr.jpg" alt="Logo" width={200} height={100} />
           </div>
         </div>
 

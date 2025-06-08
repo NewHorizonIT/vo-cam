@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.lesson-content {
+  list-style: disc;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
