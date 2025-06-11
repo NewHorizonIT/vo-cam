@@ -10,7 +10,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Brain className="h-6 w-6 text-blue-600" />
-              <span className="font-bold text-xl">Vô Cảm Learning</span>
+              <span className="font-bold text-xl">Vô Cảm</span>
             </div>
             <p className="text-muted-foreground">
               Nền tảng học tập về tâm lý học vô cảm, cung cấp kiến thức chuyên
@@ -82,7 +82,7 @@ export function Footer() {
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2024 Vô Cảm Learning. Tất cả quyền được bảo lưu.</p>
+          <p>&copy; Tất cả quyền được bảo lưu.</p>
         </div>
       </div>
     </footer>

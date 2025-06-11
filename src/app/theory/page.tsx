@@ -125,8 +125,8 @@ export default function TheoryPage() {
             Lý thuyết về Vô cảm
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Khám phá kiến thức chuyên sâu về tâm lý học vô cảm thông qua các bài
-            học có cấu trúc
+            Khám phá kiến thức chuyên sâu về bệnh &qute;vô cảm&qute; thông qua
+            các bài học có cấu trúc
           </p>
         </div>
 
