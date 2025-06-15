@@ -14,6 +14,7 @@ const navigation = [
   { name: "Lý thuyết", href: "/theory" },
   { name: "Quiz", href: "/quiz" },
   { name: "Đội ngũ", href: "/team" },
+  { name: "Game", href: "/game" },
 ];
 
 export function Navigation() {
