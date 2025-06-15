@@ -1,5 +1,5 @@
 export interface Question {
-  id: string;
+  id: number;
   question: string;
   options: string[];
   correctAnswer: number; // vị trí của đáp án đúng (index)
