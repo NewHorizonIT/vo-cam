@@ -21,10 +21,33 @@ export interface GameState {
   attempts: Record<number, number>;
 }
 
-export interface PuzzleGameProps {
+export interface PuzzleLevel {
+  id: string;
   title: string;
   description: string;
   imageUrl: string;
+  slogan?: string;
+  sublogan?: string;
   questions: Question[];
+  difficulty: "easy" | "medium" | "hard";
+  unlocked: boolean;
+  completed: boolean;
+  bestScore?: number;
+  minScore?: number; // Điểm tối thiểu để unlock level tiếp theo
+}
+
+export interface PuzzleGameProps {
+  level: PuzzleLevel;
   onComplete?: (score: number, attempts: number) => void;
+  onLevelComplete?: (levelId: string, score: number, attempts: number) => void;
+}
+
+export interface GameProgress {
+  currentLevel: number;
+  unlockedLevels: string[];
+  completedLevels: Record<
+    string,
+    { score: number; attempts: number; timestamp: number }
+  >;
+  totalScore: number;
 }

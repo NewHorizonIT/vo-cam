@@ -1,56 +1,93 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { PuzzleGame } from "@/features/game/components/puzzle-game";
-import { puzzleQuestions } from "@/features/game/data/data";
-import { Puzzle, ArrowLeft, Trophy, Target } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LevelSelector } from "@/features/game/components/level-puzzle";
+import { PuzzleGameMultiLevel } from "@/features/game/components/multi-puzzle";
+import { puzzleLevels } from "@/features/game/data";
+import type { PuzzleLevel, GameProgress } from "@/features/game/type";
+
+// Cập nhật để bỏ logic unlock và cho phép chơi tất cả levels
 
 export default function PuzzlePage() {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gameResults, setGameResults] = useState<{
-    score: number;
-    attempts: number;
-  } | null>(null);
+  const [currentLevel, setCurrentLevel] = useState<PuzzleLevel | null>(null);
+  const [gameProgress, setGameProgress] = useState<GameProgress>({
+    currentLevel: 0,
+    unlockedLevels: puzzleLevels.map((level) => level.id), // Unlock tất cả levels
+    completedLevels: {},
+    totalScore: 0,
+  });
 
-  const handleGameComplete = (score: number, attempts: number) => {
-    setGameResults({ score, attempts });
+  // Load progress từ localStorage
+  useEffect(() => {
+    const savedProgress = localStorage.getItem("puzzle-game-progress");
+    if (savedProgress) {
+      try {
+        const progress = JSON.parse(savedProgress);
+        // Đảm bảo tất cả levels đều unlocked
+        progress.unlockedLevels = puzzleLevels.map((level) => level.id);
+        setGameProgress(progress);
+      } catch (error) {
+        console.error("Error loading game progress:", error);
+      }
+    }
+  }, []);
+
+  // Save progress to localStorage
+  const saveProgress = (newProgress: GameProgress) => {
+    setGameProgress(newProgress);
+    localStorage.setItem("puzzle-game-progress", JSON.stringify(newProgress));
   };
 
-  const handleBackToMenu = () => {
-    setGameStarted(false);
-    setGameResults(null);
+  const handleSelectLevel = (level: PuzzleLevel) => {
+    setCurrentLevel(level);
   };
 
-  if (gameStarted) {
+  const handleBackToLevels = () => {
+    setCurrentLevel(null);
+  };
+
+  const handleLevelComplete = (
+    levelId: string,
+    score: number,
+    attempts: number
+  ) => {
+    const newProgress = { ...gameProgress };
+
+    // Cập nhật kết quả level
+    newProgress.completedLevels[levelId] = {
+      score,
+      attempts,
+      timestamp: Date.now(),
+    };
+
+    // Cập nhật tổng điểm
+    newProgress.totalScore = Object.values(newProgress.completedLevels).reduce(
+      (sum, result) => sum + result.score,
+      0
+    );
+
+    // Bỏ logic unlock level tiếp theo - tất cả đều có thể chơi
+
+    saveProgress(newProgress);
+  };
+
+  // Tất cả levels đều unlocked
+  const levelsWithProgress = puzzleLevels.map((level) => ({
+    ...level,
+    unlocked: true, // Luôn true
+    completed: !!gameProgress.completedLevels[level.id],
+    bestScore: gameProgress.completedLevels[level.id]?.score,
+  }));
+
+  if (currentLevel) {
     return (
       <div className="min-h-screen py-8 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="mb-6">
-            <Button
-              variant="outline"
-              onClick={handleBackToMenu}
-              className="mb-4"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại menu
-            </Button>
-          </div>
-
-          <PuzzleGame
-            title="Khám phá hình ảnh về Vô cảm"
-            description="Trả lời đúng các câu hỏi để từng bước khám phá bức tranh hoàn chỉnh về vô cảm. Mỗi câu trả lời đúng sẽ mở ra một phần của hình ảnh!"
-            imageUrl="/p3.jpg"
-            questions={puzzleQuestions}
-            onComplete={handleGameComplete}
+          <PuzzleGameMultiLevel
+            level={currentLevel}
+            onComplete={handleBackToLevels}
+            onLevelComplete={handleLevelComplete}
           />
         </div>
       </div>
@@ -59,95 +96,54 @@ export default function PuzzlePage() {
 
   return (
     <div className="min-h-screen py-8 px-4">
-      <div className="container mx-auto max-w-4xl">
+      <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Trò chơi <span className="text-blue-600">Puzzle</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Khám phá hình ảnh thông qua việc trả lời các câu hỏi về vô cảm
+            Khám phá kiến thức về vô cảm qua {puzzleLevels.length} màn chơi với
+            độ khó tăng dần
           </p>
         </div>
 
-        {/* Game Info */}
-        <Card className="max-w-2xl mx-auto mb-8">
-          <CardHeader className="text-center">
-            <CardTitle className="flex items-center justify-center gap-2">
-              <Puzzle className="w-6 h-6 text-purple-600" />
-              Trò chơi Puzzle Hình ảnh
-            </CardTitle>
-            <CardDescription>
-              Một cách thú vị để học về vô cảm thông qua trò chơi tương tác
-            </CardDescription>
+        {/* Level Selector */}
+        <LevelSelector
+          levels={levelsWithProgress}
+          gameProgress={gameProgress}
+          onSelectLevel={handleSelectLevel}
+        />
+
+        {/* Game Instructions */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Hướng dẫn chơi</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Game Stats */}
-            <div className="grid md:grid-cols-3 gap-4 text-center">
-              <div className="flex flex-col items-center space-y-2">
-                <Target className="w-8 h-8 text-blue-600" />
-                <div>
-                  <div className="font-semibold">9 ô puzzle</div>
-                  <div className="text-sm text-muted-foreground">
-                    Cần mở khóa
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col items-center space-y-2">
-                <Puzzle className="w-8 h-8 text-green-600" />
-                <div>
-                  <div className="font-semibold">9 câu hỏi</div>
-                  <div className="text-sm text-muted-foreground">Về vô cảm</div>
-                </div>
-              </div>
-              <div className="flex flex-col items-center space-y-2">
-                <Trophy className="w-8 h-8 text-yellow-600" />
-                <div>
-                  <div className="font-semibold">Điểm số</div>
-                  <div className="text-sm text-muted-foreground">
-                    Theo độ chính xác
-                  </div>
-                </div>
+          <CardContent className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold mb-2">🎯 Cách chơi:</h4>
+                <ul className="space-y-1 text-sm text-muted-foreground">
+                  <li>• Chọn bất kỳ màn nào bạn muốn chơi</li>
+                  <li>• Trả lời đúng câu hỏi để mở từng ô puzzle</li>
+                  <li>• Hoàn thành tất cả 9 ô để thấy hình ảnh đầy đủ</li>
+                  <li>• Chơi lại để cải thiện điểm số và giảm lỗi</li>
+                </ul>
               </div>
             </div>
 
-            {/* Game Rules */}
-            <div className="space-y-4">
-              <h3 className="font-semibold">Cách chơi:</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Nhấn vào từng ô để mở câu hỏi</li>
-                <li>• Trả lời đúng để mở khóa phần hình ảnh tương ứng</li>
-                <li>• Trả lời sai sẽ đóng ô lại, bạn có thể thử lại</li>
-                <li>• Mục tiêu: Mở tất cả 9 ô để hoàn thành hình ảnh</li>
-                <li>• Càng ít lần trả lời sai, điểm số càng cao</li>
+            <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
+              <h4 className="font-semibold mb-2 text-blue-800 dark:text-blue-200">
+                💡 Mẹo chơi hiệu quả:
+              </h4>
+              <ul className="space-y-1 text-sm text-blue-700 dark:text-blue-300">
+                <li>• Bắt đầu với các màn dễ để làm quen</li>
+                <li>• Đọc kỹ câu hỏi và các lựa chọn</li>
+                <li>• Sử dụng kiến thức đã học từ phần lý thuyết</li>
+                <li>• Không ngại chơi lại để đạt điểm cao hơn</li>
               </ul>
             </div>
-
-            {/* Previous Results */}
-            {gameResults && (
-              <div className="bg-green-50 dark:bg-green-950/20 p-4 rounded-lg">
-                <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
-                  Kết quả lần chơi trước:
-                </h4>
-                <div className="flex items-center gap-4">
-                  <Badge variant="secondary">
-                    {gameResults.score}/9 ô đúng
-                  </Badge>
-                  <Badge variant="outline">
-                    {gameResults.attempts} lần sai
-                  </Badge>
-                </div>
-              </div>
-            )}
-
-            <Button
-              onClick={() => setGameStarted(true)}
-              className="w-full"
-              size="lg"
-            >
-              <Puzzle className="w-5 h-5 mr-2" />
-              Bắt đầu chơi
-            </Button>
           </CardContent>
         </Card>
       </div>

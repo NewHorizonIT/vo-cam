@@ -2,17 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { PuzzlePiece } from "./puzzle-piece";
-import { Star, Target } from "lucide-react";
+import { QuestionModal } from "@/components/question-modal";
+import { Trophy, RotateCcw, Star, Target } from "lucide-react";
 import type {
   PuzzleGameProps,
   GameState,
   PuzzlePiece as PuzzlePieceType,
 } from "../type";
 import { PuzzlePreview } from "./puzzle-preview";
-import { QuestionModal } from "@/components/question-modal";
 import Image from "next/image";
 
 export function PuzzleGame({
@@ -20,6 +21,8 @@ export function PuzzleGame({
   description,
   imageUrl,
   questions,
+  slogan,
+  sublogan,
   onComplete,
 }: PuzzleGameProps) {
   const [gameState, setGameState] = useState<GameState>({
@@ -87,22 +90,22 @@ export function PuzzleGame({
     });
   };
 
-  // const resetGame = () => {
-  //   setGameState({
-  //     pieces: questions.map((question, index) => ({
-  //       id: question.id,
-  //       position: index,
-  //       isRevealed: false,
-  //       question,
-  //     })),
-  //     currentQuestion: null,
-  //     score: 0,
-  //     isCompleted: false,
-  //     attempts: {},
-  //   });
-  //   setCurrentPiece(null);
-  //   setShowQuestionModal(false);
-  // };
+  const resetGame = () => {
+    setGameState({
+      pieces: questions.map((question, index) => ({
+        id: question.id,
+        position: index,
+        isRevealed: false,
+        question,
+      })),
+      currentQuestion: null,
+      score: 0,
+      isCompleted: false,
+      attempts: {},
+    });
+    setCurrentPiece(null);
+    setShowQuestionModal(false);
+  };
 
   // Gọi callback khi hoàn thành
   useEffect(() => {
@@ -158,7 +161,7 @@ export function PuzzleGame({
             <CardContent className="p-6">
               <div className="max-w-lg mx-auto">
                 <div className="grid grid-cols-3 gap-0 border-4 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden shadow-lg">
-                  {gameState.pieces.map((piece: PuzzlePieceType) => (
+                  {gameState.pieces.map((piece) => (
                     <PuzzlePiece
                       key={piece.id}
                       piece={piece}
@@ -177,13 +180,14 @@ export function PuzzleGame({
                       Hình ảnh hoàn chỉnh:
                     </p>
                     <Image
+                      width={300}
+                      height={300}
                       src={imageUrl || "/placeholder.svg"}
                       alt="Completed puzzle"
                       className="max-w-full h-auto rounded-lg shadow-md mx-auto"
-                      width={400}
-                      height={400}
-                      loading="lazy"
                     />
+                    <p className="text-xl text-center">{slogan}</p>
+                    <p className="text-sm text-center my-4">{sublogan}</p>
                   </div>
                 )}
               </div>
@@ -195,12 +199,30 @@ export function PuzzleGame({
         <div className="lg:col-span-1">
           <PuzzlePreview
             imageUrl={imageUrl}
-            revealedPieces={gameState.pieces.map(
-              (p: PuzzlePieceType) => p.isRevealed
-            )}
+            revealedPieces={gameState.pieces.map((p) => p.isRevealed)}
           />
         </div>
       </div>
+
+      {/* Completion Message */}
+      {gameState.isCompleted && (
+        <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200">
+          <CardContent className="text-center py-8">
+            <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">
+              Chúc mừng! Bạn đã hoàn thành!
+            </h2>
+            <p className="text-green-600 dark:text-green-300 mb-4">
+              Bạn đã mở được {gameState.score}/{gameState.pieces.length} ô với{" "}
+              {totalAttempts} lần trả lời sai.
+            </p>
+            <Button onClick={resetGame} variant="outline">
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Chơi lại
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Question Modal */}
       <QuestionModal

@@ -66,8 +66,8 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Tìm hiểu các khái niệm cơ bản và nâng cao về vô cảm trong tâm
-                  lý học
+                  Tìm hiểu các khái niệm cơ bản, nguyên nhân và biểu hiện của
+                  bệnh vô cảm
                 </CardDescription>
               </CardContent>
             </Card>
@@ -81,8 +81,7 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Kiểm tra kiến thức với các câu hỏi trắc nghiệm và nhận điểm
-                  đánh giá
+                  Kiểm tra kiến thức với các câu hỏi trắc nghiệm
                 </CardDescription>
               </CardContent>
             </Card>
@@ -96,8 +95,8 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Được phát triển bởi đội ngũ có kinh nghiệm trong lĩnh vực tâm
-                  lý học
+                  Được phát triển bởi đội ngũ học sinh trường THPT Nguyễn Bỉnh
+                  Khiêm
                 </CardDescription>
               </CardContent>
             </Card>
@@ -127,8 +126,8 @@ export default function HomePage() {
             Sẵn sàng bắt đầu hành trình học tập?
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-            Tham gia cùng chúng tôi để khám phá những kiến thức thú vị về tâm lý
-            học vô cảm
+            Tham gia cùng chúng tôi để khám phá những kiến thức thú vị về bệnh
+            vô cảm
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8">

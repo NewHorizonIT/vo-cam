@@ -125,12 +125,6 @@ export function QuestionModal({
                     <strong>Đáp án của bạn:</strong>{" "}
                     {question.options[selectedAnswer!]}
                   </p>
-                  {!isCorrect && (
-                    <p className="text-sm text-green-600">
-                      <strong>Đáp án đúng:</strong>{" "}
-                      {question.options[question.correctAnswer]}
-                    </p>
-                  )}
                 </div>
               </div>
             )}

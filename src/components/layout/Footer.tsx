@@ -13,8 +13,8 @@ export function Footer() {
               <span className="font-bold text-xl">Vô Cảm</span>
             </div>
             <p className="text-muted-foreground">
-              Nền tảng học tập về tâm lý học vô cảm, cung cấp kiến thức chuyên
-              sâu và công cụ đánh giá hiệu quả.
+              Nền tảng học tập về bệnh vô cảm, cung cấp kiến thức chuyên sâu và
+              công cụ đánh giá hiệu quả.
             </p>
           </div>
 
