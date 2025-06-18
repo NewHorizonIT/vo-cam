@@ -16,15 +16,8 @@ import type {
 import { PuzzlePreview } from "./puzzle-preview";
 import Image from "next/image";
 
-export function PuzzleGame({
-  title,
-  description,
-  imageUrl,
-  questions,
-  slogan,
-  sublogan,
-  onComplete,
-}: PuzzleGameProps) {
+export function PuzzleGame({ level, onComplete }: PuzzleGameProps) {
+  const { title, description, imageUrl, questions, slogan, sublogan } = level;
   const [gameState, setGameState] = useState<GameState>({
     pieces: questions.map((question, index) => ({
       id: question.id,
