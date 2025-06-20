@@ -230,6 +230,8 @@ export function PuzzleGameMultiLevel({
                       alt="Completed puzzle"
                       className="max-w-full h-auto rounded-lg shadow-md mx-auto"
                     />
+                    <p className="text-xl font-bold mt-4">{level.slogan}</p>
+                    <p className="text-sm">{level.sublogan}</p>
                   </div>
                 )}
               </div>

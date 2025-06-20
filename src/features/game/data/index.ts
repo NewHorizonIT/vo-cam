@@ -221,7 +221,7 @@ export const puzzleLevels: PuzzleLevel[] = [
     id: "level-3-causes",
     title: "Cấp độ 3: Phân tích nguyên nhân",
     description: "Khám phá các nguyên nhân sâu xa dẫn đến vô cảm",
-    imageUrl: "/game/game_3.png",
+    imageUrl: "/game/game_3.jpg",
     difficulty: "medium",
     slogan: "Tư vấn tâm lý, trị liệu tâm thần khi cần thiết.",
     sublogan:
