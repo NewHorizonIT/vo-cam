@@ -112,7 +112,7 @@ export const puzzleLevels: PuzzleLevel[] = [
     difficulty: "medium",
     slogan: "Đọc sách, xem phim có nội dung nhân văn.",
     sublogan:
-      "'Mỗi trang sách, mỗi thước phim – là một nhịp cầu đưa ta đến với lòng nhân ái'.Hãy đọc những cuốn sách truyền cảm hứng. ãy xem những bộ phim đánh thức trái tim. Vì tri thức nuôi dưỡng trí tuệ, và nhân văn làm đẹp tâm hồn.",
+      "'Mỗi trang sách, mỗi thước phim – là một nhịp cầu đưa ta đến với lòng nhân ái'. Hãy đọc những cuốn sách truyền cảm hứng. Hãy xem những bộ phim đánh thức trái tim. Vì tri thức nuôi dưỡng trí tuệ, và nhân văn làm đẹp tâm hồn.",
     unlocked: true,
     completed: false,
     questions: [
