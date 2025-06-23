@@ -23,7 +23,7 @@ export default function HomePage() {
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Chào các bạn học sinh thân mến! Chào mừng các bạn đến với cổng
               thông tin điện tử về bệnh vô cảm ở lứa tuổi vị thành niên trưởng
-              THCS Chu Văn An – một không gian chia sẻ, học hỏi và thấu hiểu.
+              THCS – một không gian chia sẻ, học hỏi và thấu hiểu.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8">

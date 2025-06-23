@@ -60,18 +60,20 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Liên hệ</h3>
             <ul className="space-y-2">
               <li className="flex items-center space-x-2 text-muted-foreground">
-                <Facebook className="h-4 w-4" />
+                <Facebook className="h-5 w-5" />
                 <a href="https://www.facebook.com/share/19AdfXChpJ/?mibextid=wwXIfr">
                   Rèn luyện sự đồng cảm
                 </a>
               </li>
               <li className="flex items-center space-x-2 text-muted-foreground">
-                <Mail className="h-4 w-4" />
+                <Mail className="h-5 w-5" />
                 <span>vuhaihoangdung8@gmail.com</span>
               </li>
               <li className="flex items-center space-x-2 text-muted-foreground">
-                <Github className="h-4 w-4" />
-                <span>https://github.com/peterlegend29/peter</span>
+                <Github className="h-5 w-5" />
+                <a href="https://github.com/peterlegend29/peter">
+                  peterlegend29/peter
+                </a>
               </li>
             </ul>
           </div>
